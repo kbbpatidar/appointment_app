@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html ng-app="appointmentApp">
+<head>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<!-- STYLE SHEET INTERNAL / EXTERNAL -->
+<link rel="stylesheet" href="/node_modules/angular-material/angular-material.css">
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body layout="row" ng-controller="appointmentController">
+
+	<div layout="column" class="relative" layout-fill role="main">
+		
+		<md-button class="md-fab md-fab-bottom-right pink-background" aria-label="Add" ng-click="showAdd($event)"> 
+			<ng-md-icon icon="add" class="addButton"></ng-md-icon> 
+		</md-button>
+		
+		
+		<md-toolbar ng-show="!showSearch">
+	        <div class="md-toolbar-tools">
+	          <h3>Dashboard</h3>
+	          <span flex></span>
+	          
+	           <md-button class="md-icon-button md-primary" aria-label="Search"  ng-click="showSearch = !showSearch">
+		        	<ng-md-icon icon="search" class="fill-white"></ng-md-icon>
+		       </md-button>
+		      
+	          <md-menu class="" md-position-mode="target-right target" ng-show="!showSearch">
+				 <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button md-primary" aria-label="Open Settings">
+				   <ng-md-icon icon="sort" class="fill-white"></ng-md-icon>
+				 </md-button>
+				 <md-menu-content>
+				   <md-menu-item>
+				   		<md-button ng-click="orderBy('title')">
+				   			<ng-md-icon icon="sort_by_alpha" class="materialIcon insideMenu"></ng-md-icon>Sort by Title
+				   	 	</md-button>
+				   	</md-menu-item>
+				   
+				    <md-menu-item>
+				    	<md-button ng-click="orderBy('startTime')">
+				    		<ng-md-icon icon="date_range" class="materialIcon insideMenu"></ng-md-icon>Sort by Start date
+				    	</md-button>
+				    </md-menu-item>
+				 </md-menu-content>
+			  </md-menu>
+			  
+			  
+	        </div>
+	        
+	        <md-tabs md-stretch-tabs class="md-primary" md-selected="data.selectedIndex" hide>
+	          <md-tab id="tab1" aria-controls="tab1-content">APPOINTMENTS</md-tab>
+	        </md-tabs>
+     	</md-toolbar>
+     	
+     	<md-toolbar class="background-white" ng-show="showSearch">
+	        <div class="md-toolbar-tools background-white">
+	          
+	          <md-button  class="md-icon-button md-primary" ng-click="showSearch = !showSearch" aria-label="Back">
+	            <ng-md-icon icon="arrow_back" ></ng-md-icon>
+	          </md-button>
+	          
+	          <h3 flex="10" class="dark-grey-color">Back</h3>
+	          
+	          <md-input-container flex style="margin: 20px 0 0;" md-no-float>
+	            <input ng-model="search" placeholder="Search Appointment">
+	          </md-input-container>
+	          
+	          
+	          <md-button  class="md-icon-button md-primary" aria-label="Search" ng-click="showSearch = !showSearch; search = '';">
+	            <ng-md-icon icon="close"></ng-md-icon>
+	          </md-button>
+	          
+	          <md-menu class="actionItems" md-position-mode="target-right target" ng-show="!showSearch">
+				 <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button md-primary" aria-label="Open Settings">
+				   <ng-md-icon icon="more_vert" ></ng-md-icon>
+				 </md-button>
+				 <md-menu-content>
+				   <md-menu-item>
+				   		<md-button ng-click="doSomething()">
+				   			<ng-md-icon icon="edit" class="materialIcon insideMenu"></ng-md-icon> Edit
+				   	 	</md-button>
+				   	</md-menu-item>
+				   
+				    <md-menu-item>
+				    	<md-button ng-click="deleteRecord(appointment)">
+				    		<ng-md-icon icon="delete" class="materialIcon insideMenu"></ng-md-icon> Delete
+				    	</md-button>
+				    </md-menu-item>
+				 </md-menu-content>
+			  </md-menu>
+	        </div>
+      	</md-toolbar>
+      
+		
+		<md-content flex md-scroll-y> 
+			<ui-view layout="column">
+				<div class="inset" hide-sm></div>
+			
+				<ng-switch on="data.selectedIndex" class="tabpanel-container">
+					<div role="tabpanel" id="tab1-content" aria-labelledby="tab1" ng-switch-when="0" md-swipe-left="next()" md-swipe-right="previous()" layout="row"
+						layout-align="center center">
+						<md-card flex-gt-sm="90" flex-gt-md="80"> 
+							<md-card-content>
+							
+								<md-list id="listContainer"> 
+									<md-item ng-repeat="appointment in appointments | filter:search | orderBy:selectedOrder"> 
+										<md-item-content layout="row">
+											<div class="md-tile-left inset" layout="row" hide-xs>
+												<user-avatar></user-avatar>
+											</div>
+												
+											<div layout="column" flex-gt-xs="100" flex="80">
+												<h3 class="margin-top-10 dark-grey-color">{{appointment.title}}</h3>
+												<h4 class="margin-top-10 dark-grey-color" layout="row">
+													<ng-md-icon icon="access_time" class="materialIcon" hide-xs></ng-md-icon> {{appointment.startTime | date: 'medium'}} - {{appointment.endTime | date: 'medium'}}
+												</h4>
+												<div class="grey-color" layout="column" layout-gt-xs="row">
+													<ng-md-icon icon="email" class="materialIcon" hide-xs></ng-md-icon> <span class="margin-right-10">{{appointment.email}}</span>
+													<ng-md-icon icon="phone" class="materialIcon margin-left-10" hide-xs></ng-md-icon> <span class="margin-right-10">{{appointment.phone}}</span>
+												</div>
+												
+												<div class="grey-color" layout="row">
+													<p>{{appointment.about}}</p>
+												</div>
+											</div>
+											
+											<div layout="column">
+												<md-menu class="actionItems" md-position-mode="target-right target">
+													 <!-- Trigger element is a md-button with an icon -->
+													 <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button md-primary" aria-label="Open menu">
+													   <ng-md-icon icon="menu" class="materialIcon"></ng-md-icon>
+													 </md-button>
+													 <md-menu-content>
+													   <md-menu-item>
+													   		<md-button ng-click="showEdit(appointment)">
+													   			<ng-md-icon icon="edit" class="materialIcon insideMenu"></ng-md-icon> Edit
+													   	 	</md-button>
+													   	</md-menu-item>
+													   
+													    <md-menu-item>
+													    	<md-button ng-click="deleteRecord(appointment)">
+													    		<ng-md-icon icon="delete" class="materialIcon insideMenu"></ng-md-icon> Delete
+													    	</md-button>
+													    </md-menu-item>
+													 </md-menu-content>
+												</md-menu>
+											</div>
+										</md-item-content> 
+										
+										<md-divider md-inset hide-sm hide-xs ng-if="!$last"></md-divider> 
+										<md-divider hide-gt-sm ng-if="!$last"></md-divider> 
+									</md-item> 
+									<md-divider></md-divider> 
+								</md-list> 
+							</md-card-content> 
+						</md-card>
+					</div>
+				</ng-switch> 
+			</ui-view>
+		</md-content>
+	</div>
+	
+
+
+	<script type='text/javascript' src="../node_modules/angular/angular.js"></script>
+	<script type='text/javascript' src="../node_modules/angular-aria/angular-aria.js"></script>
+	<script type='text/javascript' src="../node_modules/angular-animate/angular-animate.js"></script>
+	<script type='text/javascript' src="../node_modules/angular-material/angular-material.js"></script>
+	<script type='text/javascript' src="../node_modules/angular-material-icons/angular-material-icons.min.js"></script>
+	 
+	<script src="/js/main.js"></script>
+
+</body>
+</html>

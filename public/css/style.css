@@ -1,0 +1,136 @@
+html {
+	font-family: Verdana, Geneva, sans-serif;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+}
+
+h1 {
+	font-size: 24px;
+	line-height: 26.4px;
+}
+
+h2 {
+	font-size: 18px;
+}
+
+h3 {
+	font-size: 16px;
+}
+
+h4 {
+	font-size: 12px;
+	line-height: 15.4px;
+}
+
+p {
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 20px;
+}
+
+blockquote {
+	font-size: 21px;
+	font-weight: 400;
+	line-height: 30px;
+}
+
+pre {
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 18.5714px;
+}
+
+.no-margin {
+	margin: 0;
+}
+
+.no-margin-bottom {
+	margin-bottom: 0;
+}
+
+.no-margin-top {
+	margin-top: 0;
+}
+
+.margin-10 {
+	margin: 10px;
+}
+
+.margin-top-10 {
+	margin-top: 10px;
+}
+
+.margin-bottom-10 {
+	margin-bottom: 10px;
+}
+
+.margin-left-10 {
+	margin-left: 10px;
+}
+
+.margin-right-10 {
+	margin-right: 10px;
+}
+
+.grey-color {
+	color: #868585;
+}
+
+.dark-grey-color {
+	color: #515151;
+}
+
+.pink-color {
+	color: #FF8A80;
+}
+
+.pink-background {
+	background: #FF8A80 !important;
+}
+
+.materialIcon {
+	fill: #FF8A80;
+	position: relative;
+	margin-right: 10px;
+	bottom: 4px;
+}
+
+.materialIcon.insideMenu {
+	bottom: 0 !important;
+	top: 6px;
+}
+
+#listContainer md-item-content {
+	position: relative;
+}
+
+.actionItems {
+	position: absolute;
+	right: 0;
+}
+
+.addButton {
+	fill: #FFFFFF;
+	position: relative;
+	top: 7px;
+}
+
+.hint {
+	position: absolute;
+	left: 2px;
+	right: auto;
+	bottom: 7px;
+	font-size: 12px;
+	line-height: 14px;
+	transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+	color: grey;
+}
+
+.fill-white {
+	fill: #FFFFFF;
+}
+
+.background-white {
+	background: #FFFFFF;
+}
