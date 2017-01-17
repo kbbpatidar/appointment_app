@@ -1,5 +1,5 @@
 html {
-	font-family: Verdana, Geneva, sans-serif;
+	font-family: Verdana, sans-serif;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
@@ -133,4 +133,34 @@ pre {
 
 .background-white {
 	background: #FFFFFF;
+}
+
+.errorMessage {
+	color: rgb(221,44,0);
+    font-size: 12px;
+}
+
+.no-error-space .md-errors-spacer {
+	display: none !important;
+}
+
+.moment-picker .moment-picker-container {
+	font-size: 14px;
+	font-family: Verdana, sans-serif;
+}
+
+
+.md-virtual-repeat-container.md-orient-vertical {
+    height: calc(100% - 100px);
+}
+md-list.table-fixed-width.md-whiteframe-z1 {
+    height: 100%;
+}
+md-card {
+    overflow: hidden;
+}
+
+/* THIS CAUSES INCONSISTENT SCROLLING/LOADING! */
+md-list-item, md-list-item ._md-list-item-inner {
+    min-height: 32px;
 }

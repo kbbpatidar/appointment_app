@@ -1,9 +1,8 @@
-var app = angular.module('appointmentApp', ['ngMaterial', 'ngMdIcons']);
+var app = angular.module('appointmentApp', ['ngMaterial', 'ngMdIcons', 'moment-picker']);
 
 app.controller('appointmentController', ['$scope', '$rootScope', '$mdBottomSheet','$mdSidenav', '$mdDialog', '$http', function($scope, $rootScope, $mdBottomSheet, $mdSidenav, $mdDialog, $http){
-
 	
-	$rootScope.newAppointment = [];
+	$rootScope.editAppointment = [];
 	
 	/*
 	 * DEFINE SELECTED ORDER DEFAULT VALUE FOR SORTING LISTING OF APPOINTMENT.
@@ -27,11 +26,12 @@ app.controller('appointmentController', ['$scope', '$rootScope', '$mdBottomSheet
 	 */
 	$scope.showAdd = function(ev) {
 		
-		$rootScope.newAppointment = [];
+		$rootScope.editAppointment = [];
 		
+		$rootScope.dialogTitle = 'Add';
 		$mdDialog.show({
 			controller: DialogController,
-			templateUrl: 'addAppointment.html',
+			templateUrl: 'appointment.html',
 			parent: angular.element(document.body),
 		    targetEvent: ev,
 		    clickOutsideToClose:false
@@ -50,10 +50,23 @@ app.controller('appointmentController', ['$scope', '$rootScope', '$mdBottomSheet
 	 * Use @ index.html
 	 */
 	$scope.showEdit = function(appointment) {
-		$rootScope.newAppointment = appointment;
+		
+		$rootScope.editAppointment = angular.copy(appointment);
+		$rootScope.dialogTitle = 'Edit';
+		
+		if ($rootScope.editAppointment) {
+			if ($rootScope.editAppointment.startTime) {
+				$rootScope.editAppointment.startTime = moment($rootScope.editAppointment.startTime).format('lll');
+			}
+			
+			if ($rootScope.editAppointment.endTime) {
+				$rootScope.editAppointment.endTime = moment($rootScope.editAppointment.endTime).format('lll');
+			}
+		} 
+		
 		$mdDialog.show({
 			controller: DialogController,
-			templateUrl: 'addAppointment.html',
+			templateUrl: 'appointment.html',
 			parent: angular.element(document.body),
 		    clickOutsideToClose:false
 		})
@@ -103,8 +116,9 @@ app.controller('appointmentController', ['$scope', '$rootScope', '$mdBottomSheet
  */
 function DialogController($scope, $rootScope, $mdDialog) {
 	
-	console.log('$scope.appointment', $rootScope.newAppointment);
-	// $scope.newAppointment = $rootScope.newAppointment;
+	$scope.dialogTitle = $rootScope.dialogTitle;
+	
+	$scope.appointment = angular.copy($rootScope.editAppointment);
 	
 	/*
 	 * MATERIAL DIALOG BOX PREDEFINED FUNCTIONS 
@@ -121,36 +135,91 @@ function DialogController($scope, $rootScope, $mdDialog) {
 	// END
 	
 	
-	
 	/*
 	 * WHEN USER CLICK ON SAVING OF THE APPOINTMENT.
 	 * ALSO CHECKS FOR THE VALIDATION(S) AND PROPER RETURN MESSAGE.
 	 */
-	$scope.submitForm = function(newAppointment){
-		if (newAppointment) {
-			if (newAppointment.title && newAppointment.startTime && newAppointment.endTime) {
-				var temp_app = [];
+	$scope.submitForm = function(appointment){
+		$scope.showTitleError = false;
+		$scope.showDateError = false;
+		$scope.showEmailError = false;
+		$scope.showPhoneError = false;
+		
+		
+		// console.log('appointment', appointment);
+		
+		var validate = true;
+		
+		validate = $scope.validateForm(appointment);
+		console.log('validate', validate);
+		
+		// Go Inside if validate returns true and has new/updated appointment object.
+		if (appointment && validate) {
+				if (appointment.id) {
+					var key = appointment.id - 1;
+					
+					$rootScope.appointments[key].title = appointment.title;
+					$rootScope.appointments[key].startTime = appointment.startTime;
+					$rootScope.appointments[key].endTime = appointment.endTime;
+					$rootScope.appointments[key].about = appointment.about;
+					$rootScope.appointments[key].email = appointment.email;
+					$rootScope.appointments[key].phone = appointment.phone ? appointment.phone : '';
+				}
+				else {
+					var temp_app = [];
+					
+					temp_app.title = appointment.title;
+					temp_app.startTime = new Date(appointment.startTime);
+					temp_app.endTime = new Date(appointment.endTime);
+					temp_app.about = appointment.about;
+					temp_app.email = appointment.email;
+					temp_app.phone = appointment.phone;
+					
+					$rootScope.appointments.push(temp_app);	
+				}
 				
-				temp_app.title = newAppointment.title;
-				temp_app.startTime = newAppointment.startTime;
-				temp_app.endTime = newAppointment.endTime;
-				temp_app.about = newAppointment.about;
-				temp_app.email = newAppointment.email;
-				temp_app.phone = newAppointment.phone;
-				
-				$rootScope.appointments.push(temp_app);
-				
-				$mdDialog.hide('save');
-			}
-			else {
-				alert('Please fill all required fields.');
-			}	
-		}
-		else {
-			alert('Something Went wrong');
+			$mdDialog.hide('save');
 		}
 	};
 	// END of SubmitForm
+	
+	
+	/*
+	 * Function to validate submitted form. 
+	 */
+	$scope.validateForm = function(appointment) {
+		
+		if (!appointment.title) {
+			$scope.showTitleError = true;
+			return false;
+		}
+		
+		if (!appointment.startTime || !appointment.endTime) {
+			$scope.showDateError = true;
+			return false;
+		}
+		
+		if (!appointment.email) {
+			$scope.showEmailError = true;
+			return false;
+		}
+		
+		if (appointment.phone) {
+			// Check against the format
+			if (/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/.test(appointment.phone)) {
+				$scope.showPhoneError = false;
+				return true;				
+			} else {
+				console.log(454);
+				$scope.showPhoneError = true;
+				return false;
+			}
+		}
+		else {
+			$scope.showPhoneError = false;
+			return true;
+		}
+	};
 	
 };
 // END OF DialogController

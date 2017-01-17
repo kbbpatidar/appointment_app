@@ -1,0 +1,79 @@
+<md-dialog aria-label="Appointment">
+<form name="appointmentForm" novalidate>
+	
+	<md-toolbar class="pink-background">
+		<div class="md-toolbar-tools pink-background">
+			<h2>{{dialogTitle}} an appointment</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="cancel()" aria-label="Cancel"> 
+				<ng-md-icon icon="close" style="fill: #FFFFFF;"></ng-md-icon> 
+			</md-button>
+		</div>
+	</md-toolbar>
+
+	<md-dialog-content class="md-padding">
+		<div layout layout-sm="column">
+			<md-input-container flex class="" md-no-float> 
+			
+			 <input ng-model="appointment.title" name="title" placeholder="Appointment Title" required /> 
+			
+			  <div ng-show="showTitleError" class="errorMessage">
+	            <div>Title is required.</div>
+	          </div>
+			</md-input-container>
+		</div>
+		<div layout="column">
+			<div layout="row">
+				<div moment-picker="appointment.startTime" format="lll" min-view="year" max-view="hour" start-view="month" autoclose="true" today="true" validate="true" flex>
+				     <md-input-container flex class=" no-margin" md-no-float> 
+						 <input placeholder="Start Date & Time" ng-model="appointment.startTime" ng-model-options="{ updateOn: 'blur' }"> 
+					 </md-input-container>
+				</div>
+				
+				<div moment-picker="appointment.endTime" format="lll" min-view="year" max-view="hour" start-view="month" autoclose="true" today="true" validate="true">
+				     <md-input-container flex class=" no-margin" md-no-float> 
+						 <input placeholder="End Date & Time" ng-model="appointment.endTime" ng-model-options="{ updateOn: 'blur' }"> 
+					 </md-input-container>
+				</div>
+				
+			</div>
+			<div ng-show="showDateError" class="errorMessage">
+	            <div>Date & Time is required.</div>
+            </div>
+		</div>
+		
+		<div layout layout-sm="column">
+			<md-input-container class="md-block" flex-gt-sm md-no-float>
+	          <input name="email" ng-model="appointment.email" placeholder="Email"
+	                 minlength="6" maxlength="100" ng-pattern="/^.+@.+\..+$/" required />
+	        
+	          <div ng-show="showEmailError" class="errorMessage">
+	            <div>Email is required.</div>
+	          </div>
+	                 
+	        </md-input-container>
+        			
+			<md-input-container class="md-block" flex-gt-sm md-no-float>
+	          <input placeholder="Phone" name="phone" ng-model="appointment.phone" />
+	
+	          <div class="hint" ng-hide="showPhoneError">(###) ###-####</div>
+	          
+	          <div ng-show="showPhoneError" class="errorMessage">
+	            <div>Phone number should be in this format (###) ###-####.</div>
+	          </div>
+	          
+	        </md-input-container>
+	        
+		</div>
+		<div layout layout-sm="column">
+			<md-input-container flex="90"> <textarea ng-model="appointment.about" columns="1" md-maxlength="250" placeholder="Description" md-no-float></textarea>
+			</md-input-container>
+		</div>	 
+	</md-dialog-content>
+
+	<md-dialog-actions layout="row"> <span flex></span> 
+		<md-button aria-label="Cancel" class="" ng-click="answer('cancel')"> Cancel </md-button> 
+		<md-button aria-label="Save" class="md-raised pink-background" ng-click="submitForm(appointment)"> Save </md-button> 
+	</md-dialog-actions>
+</form>
+</md-dialog>
