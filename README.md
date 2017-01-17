@@ -1,4 +1,4 @@
-Appointment App: Basic CRUD Operation using Angular Material
+CRUD Operation using Angular + Material
 ==============
 
 Information on Application
@@ -20,6 +20,7 @@ Used elements
     3. Icons
     4. MD List and List Item
     5. MD Card
+    6. Date and Time Selection using moment for better user interface.
     
     Material layout also help us to support all mobile size without making any changes in the UI.
 
@@ -29,3 +30,4 @@ References used in Application
 --------------
 1. https://material.angularjs.org (For Base)
 2. https://github.com/klarsys/angular-material-icons (For Icons)
+3. https://github.com/indrimuska/angular-moment-picker (Angular Moment Picker)
