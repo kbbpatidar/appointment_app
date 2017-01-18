@@ -31,3 +31,6 @@ References used in Application
 1. https://material.angularjs.org (For Base)
 2. https://github.com/klarsys/angular-material-icons (For Icons)
 3. https://github.com/indrimuska/angular-moment-picker (Angular Moment Picker)
+
+Please check wiki for original application image reference.
+------------- 
