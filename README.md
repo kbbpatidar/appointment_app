@@ -34,3 +34,11 @@ References used in Application
 
 Please check wiki for original application image reference.
 ------------- 
+
+Extra upcoming features. (TODO checklist)
+-------------
+1. Adding firebase for storage along with Angularjs [Ref: https://firebase.google.com/]
+2. Date validation (compare and check with existing data) while adding/editing record.
+3. Autoloading of the records on the scroll.
+
+
